@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安心起飛吧：出國前知識挑戰</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/path/to/your/favicon.png" type="image/png">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    </head>
+<body>
+    <header>
+        <h1>安心起飛吧：出國前知識挑戰</h1>
+        <p>5 分鐘快速掌握出國知識，輕鬆開啟自由行！</p>
+    </header>
+
+    <main>
+        <section id="country-selection" class="screen active">
+            <h2>選擇您的目的地</h2>
+            <div class="country-grid">
+                <div class="country-card" data-country="Japan">
+                    <img src="images\Japan.svg.webp" alt="日本國旗">
+                    <h3>日本</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="Thailand">
+                    <img src="images\thailand.jpg" alt="泰國國旗">
+                    <h3>泰國</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="Australia">
+                    <img src="images\Flag_of_Australia.svg" alt="澳洲國旗">
+                    <h3>澳洲</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="Vietnam">
+                    <img src="images\越南.png" alt="越南國旗">
+                    <h3>越南</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="Philippines">
+                    <img src="images\菲律賓.png" alt="菲律賓國旗">
+                    <h3>菲律賓</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="SouthKorea">
+                    <img src="images\Korea.svg.png" alt="韓國國旗">
+                    <h3>韓國</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="HongKong">
+                    <img src="images\香港.png" alt="香港國旗">
+                    <h3>香港</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+                <div class="country-card" data-country="NewZealand">
+                    <img src="images\紐西蘭.png" alt="紐西蘭國旗">
+                    <h3>紐西蘭</h3>
+                    <button class="start-challenge-btn">開始挑戰</button>
+                    <button class="view-info-btn">查詢資訊</button>
+                </div>
+            </div>
+            <div class="leaderboard-btn-wrapper">
+                <button id="leaderboard-btn">查看排行榜</button>
+            </div>
+
+        </section>
+
+        <section id="challenge-screen" class="screen">
+            <h2>知識挑戰</h2>
+            <div id="quiz-container">
+                <p id="question-number">第 1 題</p>
+                <h3 id="question-text"></h3>
+                <div id="options-container">
+                    <button class="option-btn" data-option="A"></button>
+                    <button class="option-btn" data-option="B"></button>
+                    <button class="option-btn" data-option="C"></button>
+                    <button class="option-btn" data-option="D"></button>
+                </div>
+                <p id="feedback-text"></p>
+                <div class="challenge-controls">
+                    <button id="next-question-btn" class="hidden">下一題</button>
+                    <button id="end-challenge-btn" class="hidden">結束挑戰</button>
+                </div>
+            </div>
+            <p id="current-score">分數：0</p>
+        </section>
+
+        <section id="result-screen" class="screen">
+            <h2>挑戰結果</h2>
+            <p>您的總分是：<span id="final-score"></span></p>
+            <input type="text" id="player-name" placeholder="輸入您的暱稱" maxlength="10">
+            <button id="submit-score-btn">提交分數</button>
+            <button id="rechallenge-btn">重新挑戰</button>
+            <button id="back-to-home-btn">返回首頁</button>
+        </section>
+
+        <section id="info-screen" class="screen">
+            <h2><span id="info-country-name"></span> 旅遊資訊</h2>
+            <div id="info-content">
+                <p><strong>簽證需求：</strong><span id="visa-info"></span></p>
+                <p><strong>疫苗建議：</strong><span id="vaccine-info"></span></p>
+                <p><strong>文化禁忌：</strong><span id="culture-taboos"></span></p>
+                <p><strong>禁止攜帶物品：</strong><span id="prohibited-items"></span></p>
+                </div>
+            <button id="back-from-info-btn">返回</button>
+            <button id="start-challenge-from-info-btn">開始挑戰</button>
+        </section>
+
+        <section id="leaderboard-screen" class="screen">
+            <h2>排行榜</h2>
+            <ol id="leaderboard-list"></ol>
+            <button id="back-from-leaderboard-btn">返回首頁</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 安心起飛吧。版權所有。</p>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
